@@ -5,7 +5,7 @@ exports.author_list = async (req, res, next) => {
 };
 
 exports.author_detail = async (req, res, next) => {
-    res.send(`NOT IMPLEMENTED: Author detail${req.params.id}`);
+    res.send(`NOT IMPLEMENTED: Author detail: ${req.params.id}`);
 };
 
 exports.author_create_get = async (req, res, next) => {
