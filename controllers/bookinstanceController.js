@@ -1,0 +1,33 @@
+const BookInstance = require("../models/bookinstance");
+
+exports.bookinstance_list = async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: BookInstance list");
+};
+
+exports.bookinstance_detais = async (req, res, next) =>{
+    res.send(`NOT IMPLEMENTED: BookInstance details: ${req.params.id}`);
+};
+
+exports.bookinstance_create_get = async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: BookInstance create get");
+};
+
+exports.bookinstance_create_post = async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: BookInstance create post");
+};
+
+exports.bookinstance_delete_get = async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: BookInstance delete get");
+};
+
+exports.bookinstance_delete_post = async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: BookInstance delete post");
+};
+
+exports.bookinstance_update_get = async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: BookInstance update get");
+};
+
+exports.bookinstance_update_post = async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: BookInstance update post");
+};
