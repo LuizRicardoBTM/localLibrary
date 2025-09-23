@@ -3,12 +3,15 @@ var debug = require('debug')('express-locallibrary-tutorial:server');
 var http = require('http');
 
 var port = normalizePort(process.env.PORT || '3000');
+var mongooseLogin = process.env.MONGOOSE_LOGIN;
+var mongoosePassword = process.env.MONGOOSE_PASSWORD;
+
 app.set('port', port);
 
 const mongoose = require("mongoose");
 
 mongoose.set("strictQuery", false);
-const mongoDB = "mongodb+srv://admLuiz:admin@project0.t8ptq0i.mongodb.net/?retryWrites=true&w=majority&appName=Project0";
+const mongoDB = `mongodb+srv://${mongooseLogin}:${mongoosePassword}@project0.t8ptq0i.mongodb.net/?retryWrites=true&w=majority&appName=Project0`;
 
 async function connectMongoose() {
   await mongoose.connect(mongoDB);
