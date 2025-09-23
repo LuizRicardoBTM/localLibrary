@@ -1,9 +1,9 @@
 var app = require('../app');
 var debug = require('debug')('express-locallibrary-tutorial:server');
 var http = require('http');
-var process = require('dotenv').config();
+require('dotenv').config();
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = process.env.PORT;
 var mongooseLogin = process.env.MONGOOSE_LOGIN;
 var mongoosePassword = process.env.MONGOOSE_PASSWORD;
 
