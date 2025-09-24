@@ -20,19 +20,25 @@ async function findAuthorAndHisBooks(id) {
 
 exports.author_detail = async (req, res, next) => {
 
-    const [author, allBooksByAuthor] = await findAuthorAndHisBooks(req.params.id);
+   try {
+    const author = await Author.findById(req.params.id).exec();
 
     if(author === null){
         const err = new Error("Author not found");
         err.status = 404;
         return next(err);
     }
+    const  books  = await Book.find({ author: id }, "title summary").exec();
 
     res.render("author_detail", {
         title: "Author Details",
         author,
-        author_books: allBooksByAuthor,
-    })
+        author_books: books,
+    });
+
+   } catch (error) {
+    return next(error); 
+   }
 };
 
 exports.author_create_get = async (req, res, next) => {
