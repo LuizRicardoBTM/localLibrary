@@ -23,12 +23,14 @@ AuthorSchema.virtual("url").get(function(){
     return `author/${this.id}`;
 });
 
-AuthorSchema.virtual("birthDate_formatted").get(function(){
-    return DateTime.fromJSDate(this.birthDate).toLocaleString(DateTime.DATE_MED);
-});
+AuthorSchema.virtual("lifespan").get(function(){
+    const birthDate_formatted = DateTime.fromJSDate(this.birthDate).toLocaleString(DateTime.DATE_MED);
+    const deathDate_formatted = DateTime.fromJSDate(this.deathDate).toLocaleString(DateTime.DATE_MED);
 
-AuthorSchema.virtual("deathDate_formatted").get(function(){
-    return DateTime.fromJSDate(this.deathDate).toLocaleString(DateTime.DATE_MED);
+    if(birthDate_formatted !== null && deathDate_formatted !== null){
+        return `${birthDate_formatted} - ${deathDate_formatted}`;
+    }
+    return `${birthDate_formatted} - Still alive`;
 });
 
 module.exports = mongoose.model("Author", AuthorSchema);
