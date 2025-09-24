@@ -9,7 +9,7 @@ exports.bookinstance_list = async (req, res, next) => {
   });
 };
 
-exports.bookinstance_detais = async (req, res, next) =>{
+exports.bookinstance_detail = async (req, res, next) =>{
     res.send(`NOT IMPLEMENTED: BookInstance details: ${req.params.id}`);
 };
 

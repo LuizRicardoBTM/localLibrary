@@ -9,24 +9,24 @@ exports.genre_list = async (req, res, next) => {
       });
 };
 
-exports.genre_details = async (req, res, next) => {
-    
-    const [genre, booksInGenre] = await Promise.all([
-        Genre.findById(req.params.id).exec(),
-        Book.find({genre: req.params.id}, "Title Sumarry").exec(),
-    ]);
+exports.genre_detail = async (req, res, next) => {
 
-    if(genre === null){
-        const err = new Error("Genre not found");
-        err.status = 404;
-        return next(err);
-    }
+  const [genre, booksInGenre] = await Promise.all([
+    Genre.findById(req.params.id).exec(),
+    Book.find({ genre: req.params.id }, "title summary").exec(),
+  ]);
 
-    res.render("genre_details", {
-        title: "Genre detail",
-        genre,
-        genre_books: booksInGenre,
-    })
+  if (genre === null) {
+    const err = new Error("Genre not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("genre_detail", {
+    title: "Genre Detail",
+    genre,
+    genre_books: booksInGenre,
+  });
 };
 
 exports.genre_create_get = async (req, res, next) => {
