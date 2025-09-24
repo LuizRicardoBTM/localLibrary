@@ -22,7 +22,7 @@ exports.genre_details = async (req, res, next) => {
         return next(err);
     }
 
-    res.render("genre_detail", {
+    res.render("genre_details", {
         title: "Genre detail",
         genre,
         genre_books: booksInGenre,
