@@ -27,13 +27,15 @@ AuthorSchema.virtual("lifespan").get(function(){
     const birthDate_formatted = DateTime.fromJSDate(this.birthDate).toLocaleString(DateTime.DATE_MED);
     const deathDate_formatted = DateTime.fromJSDate(this.deathDate).toLocaleString(DateTime.DATE_MED);
 
-    if(birthDate_formatted != false && deathDate_formatted != false){
+    if(this.birthDate !== undefined && this.deathDate !== undefined){
         return `${birthDate_formatted} - ${deathDate_formatted}`;
     }
-    else if(birthDate_formatted != false && deathDate_formatted === false){
+    else if(this.birthDate !== undefined && this.deathDate === undefined){
         return `${birthDate_formatted} - Still alive`;
     }
+    else{
         return "No lifespan information";
+    }
         
 });
 
