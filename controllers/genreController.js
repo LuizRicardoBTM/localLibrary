@@ -1,4 +1,5 @@
 const Genre = require("../models/genre");
+const Book = require("../models/book");
 
 exports.genre_list = async (req, res, next) => {
     const allGenres = await Genre.find().sort({ name: 1 }).exec();
@@ -8,8 +9,24 @@ exports.genre_list = async (req, res, next) => {
       });
 };
 
-exports.genre_details = async (req, res, next) => {
-    res.send(`NOT IMPLEMENTED: Genre detail: ${req.params.id}`);
+exports.genre_detail = async (req, res, next) => {
+
+  const [genre, booksInGenre] = await Promise.all([
+    Genre.findById(req.params.id).exec(),
+    Book.find({ genre: req.params.id }, "title summary").exec(),
+  ]);
+
+  if (genre === null) {
+    const err = new Error("Genre not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("genre_detail", {
+    title: "Genre Detail",
+    genre,
+    genre_books: booksInGenre,
+  });
 };
 
 exports.genre_create_get = async (req, res, next) => {

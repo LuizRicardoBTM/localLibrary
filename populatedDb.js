@@ -44,8 +44,8 @@ async function genreCreate(index, name) {
 
 async function authorCreate(index, firstName, surname, birthDate, deathDate) {
   const authordetail = { firstName: firstName, surname: surname };
-  if (birthDate != false) authordetail.date_of_birth = birthDate;
-  if (deathDate != false) authordetail.date_of_death = deathDate;
+  if (birthDate != false) authordetail.birthDate = birthDate;
+  if (deathDate != false) authordetail.deathDate = deathDate;
 
   const author = new Author(authordetail);
 
@@ -69,12 +69,12 @@ async function bookCreate(index, title, summary, isbn, author, genre) {
   console.log(`Added book: ${title}`);
 }
 
-async function bookInstanceCreate(index, book, imprint, due_back, status) {
+async function bookInstanceCreate(index, book, imprint, dueBack, status) {
   const bookinstancedetail = {
     book,
     imprint,
   };
-  if (due_back != false) bookinstancedetail.due_back = due_back;
+  if (dueBack != false) bookinstancedetail.dueBack = dueBack;
   if (status != false) bookinstancedetail.status = status;
 
   const bookinstance = new BookInstance(bookinstancedetail);
