@@ -11,8 +11,11 @@ exports.author_list = async (req, res, next) => {
 
 exports.author_detail = async (req, res, next) => {
     
-    const [author, allBooksByAuthor] = await Promise.all([
+    const [author] = await Promise.all([
         Author.findById(req.params.id).exec(),
+    ]);
+    
+    const [allBooksByAuthor] = await Promise.all([
         Book.find({author: req.params.id}, "title sumarry").exec(),
     ]);
 
