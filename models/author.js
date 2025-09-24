@@ -27,10 +27,14 @@ AuthorSchema.virtual("lifespan").get(function(){
     const birthDate_formatted = DateTime.fromJSDate(this.birthDate).toLocaleString(DateTime.DATE_MED);
     const deathDate_formatted = DateTime.fromJSDate(this.deathDate).toLocaleString(DateTime.DATE_MED);
 
-    if(birthDate_formatted !== null && deathDate_formatted !== null){
+    if(birthDate_formatted != false && deathDate_formatted != false){
         return `${birthDate_formatted} - ${deathDate_formatted}`;
     }
-    return `${birthDate_formatted} - Still alive`;
+    else if(birthDate_formatted != false && deathDate_formatted === false){
+        return `${birthDate_formatted} - Still alive`;
+    }
+        return "No lifespan information";
+        
 });
 
 module.exports = mongoose.model("Author", AuthorSchema);
