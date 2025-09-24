@@ -10,7 +10,21 @@ exports.bookinstance_list = async (req, res, next) => {
 };
 
 exports.bookinstance_detail = async (req, res, next) =>{
-    res.send(`NOT IMPLEMENTED: BookInstance details: ${req.params.id}`);
+    const bookInstance = await BookInstance
+    .findById(req.params.id)
+    .populate("book")
+    .exec();
+
+    if(bookInstance === null){
+        const err = new Error("Book copy not found");
+        err.status = 404;
+        return next(err);
+    }
+
+    res.render("bookinstance_detail", {
+        title: "Book: ",
+        bookinstance: bookInstance,
+    })
 };
 
 exports.bookinstance_create_get = async (req, res, next) => {
