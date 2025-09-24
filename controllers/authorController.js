@@ -9,15 +9,18 @@ exports.author_list = async (req, res, next) => {
   });
 };
 
+async function findAuthorAndHisBooks(id) {
+  const [author, allBooksByAuthor] = await Promise.all([
+    Author.findById(id).exec(),
+    Book.find({ author: id }, "title summary").exec(),
+  ]);
+
+  return [author, allBooksByAuthor];
+}
+
 exports.author_detail = async (req, res, next) => {
-    
-    const [author] = await Promise.all([
-        Author.findById(req.params.id).exec(),
-    ]);
-    
-    const [allBooksByAuthor] = await Promise.all([
-        Book.find({author: req.params.id}, "title sumarry").exec(),
-    ]);
+
+    const [author, allBooksByAuthor] = await findAuthorAndHisBooks(req.params.id);
 
     if(author === null){
         const err = new Error("Author not found");
@@ -26,7 +29,7 @@ exports.author_detail = async (req, res, next) => {
     }
 
     res.render("author_detail", {
-        title: "Author detail",
+        title: "Author Details",
         author,
         author_books: allBooksByAuthor,
     })
