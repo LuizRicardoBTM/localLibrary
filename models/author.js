@@ -22,4 +22,12 @@ AuthorSchema.virtual("url").get(function(){
     return `author/${this.id}`;
 });
 
+AuthorSchema.virtual("birthDate_formatted").get(function(){
+    return DateTime.fromJSDate(this.birthDate).toLocaleString(DateTime.DATE_MED);
+});
+
+AuthorSchema.virtual("deathDate_formatted").get(function(){
+    return DateTime.fromJSDate(this.deathDate).toLocaleString(DateTime.DATE_MED);
+});
+
 module.exports = mongoose.model("Author", AuthorSchema);
