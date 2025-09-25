@@ -19,7 +19,7 @@ exports.authorDetail = async (req, res, next) => {
         err.status = 404;
         return next(err);
     }
-    const  author_books  = await Book.find({ author: id }, "title summary").exec();
+    const  author_books  = await Book.find({ author: req.params.id }, "title summary").exec();
 
     res.render("authorDetail", {
         title: "Author Details",

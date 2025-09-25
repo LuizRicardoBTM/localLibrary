@@ -5,7 +5,6 @@ const BookInstance = require("../models/bookinstance");
 
 exports.index = async (req, res, next) => {
   
-  try{
   const [
     number_of_books,
     number_of_book_instances,
@@ -19,9 +18,6 @@ exports.index = async (req, res, next) => {
     Author.countDocuments({}).exec(),
     Genre.countDocuments({}).exec(),
   ]);
-  } catch (error) {
-    return next(error); 
-   }
 
   res.render("index", {
     title: "Local Library Home",

@@ -10,14 +10,11 @@ exports.bookInstanceList = async (req, res, next) => {
 };
 
 exports.bookInstanceDetail = async (req, res, next) =>{
-    try{
+
     const book_instance = await BookInstance
     .findById(req.params.id)
     .populate("book")
     .exec();
-    } catch (error) {
-    return next(error); 
-   }
 
     if(book_instance === null){
         const err = new Error("Book copy not found");
