@@ -7,9 +7,9 @@ block content
   div(style='margin-left:20px;margin-top:20px')
 
     h2(style='font-size: 1.5rem;') Books
-    if genre_books.length
+    if books_in_genre.length
       dl
-        each book in genre_books
+        each book in books_in_genre
           dt
             a(href=book.url) #{book.title}
           dd #{book.summary}

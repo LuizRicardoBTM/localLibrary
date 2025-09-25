@@ -19,7 +19,7 @@ BookInstanceSchema.virtual("url").get(function(){
     return `bookinstance/${this._id}`; 
 });
 
-BookInstanceSchema.virtual("dueBack_formatted").get(function(){
+BookInstanceSchema.virtual("dueBackFormatted").get(function(){
     return DateTime.fromJSDate(this.dueBack).toLocaleString(DateTime.DATE_MED);
 });
 

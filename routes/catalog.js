@@ -1,83 +1,83 @@
 const express = require("express");
 
-const book_controller = require("../controllers/bookController");
-const author_controller = require("../controllers/authorController");
-const book_instance_controller = require("../controllers/bookinstanceController");
-const genre_controller = require("../controllers/genreController");
+const bookController = require("../controllers/bookController");
+const authorController = require("../controllers/authorController");
+const genreController = require("../controllers/genreController");
+const bookInstanceController = require("../controllers/bookinstanceController");
 
 const router = express.Router();
 
     //BOOK ROUTES//
-router.get("/", book_controller.index);
+router.get("/", bookController.index);
 
-router.get("/book/create", book_controller.book_create_get);
+router.get("/book/create", bookController.bookCreateGet);
 
-router.post("/book/create", book_controller.book_create_post);
+router.post("/book/create", bookController.bookCreatePost);
 
-router.get("/book/:id/delete", book_controller.book_delete_get);
+router.get("/book/:id/delete", bookController.bookDeleteGet);
 
-router.post("/book/:id/delete", book_controller.book_delete_post);
+router.post("/book/:id/delete", bookController.bookDeletePost);
 
-router.get("/book/:id/update", book_controller.book_update_get);
+router.get("/book/:id/update", bookController.bookUpdateGet);
 
-router.post("/book/:id/update", book_controller.book_update_post);
+router.post("/book/:id/update", bookController.bookUpdatePost);
 
-router.get("/book/:id", book_controller.book_detail);
+router.get("/book/:id", bookController.bookDetail);
 
-router.get("/books", book_controller.book_list);
+router.get("/books", bookController.bookList);
 
 
     //AUTHOR ROUTES//
-router.get("/author/create", author_controller.author_create_get);
+router.get("/author/create", authorController.authorCreateGet);
 
-router.post("/author/create", author_controller.author_create_post);
+router.post("/author/create", authorController.authorCreatePost);
 
-router.get("/author/:id/delete", author_controller.author_delete_get);
+router.get("/author/:id/delete", authorController.authorDeleteGet);
 
-router.post("/author/:id/delete", author_controller.author_delete_post);
+router.post("/author/:id/delete", authorController.authorDeletePost);
 
-router.get("/author/:id/update", author_controller.author_update_get);
+router.get("/author/:id/update", authorController.authorUpdateGet);
 
-router.post("/author/:id/update", author_controller.author_update_post);
+router.post("/author/:id/update", authorController.authorUpdatePost);
 
-router.get("/author/:id", author_controller.author_detail);
+router.get("/author/:id", authorController.authorDetail);
 
-router.get("/authors", author_controller.author_list);
+router.get("/authors", authorController.authorList);
 
  
     //GENRE ROUTES//
-router.get("/genre/create", genre_controller.genre_create_get);
+router.get("/genre/create", genreController.genreCreateGet);
 
-router.post("/genre/create", genre_controller.genre_create_post);
+router.post("/genre/create", genreController.genreCreatePost);
 
-router.get("/genre/:id/delete", genre_controller.genre_delete_get);
+router.get("/genre/:id/delete", genreController.genreDeleteGet);
 
-router.post("/genre/:id/delete", genre_controller.genre_delete_post);
+router.post("/genre/:id/delete", genreController.genreDeletePost);
 
-router.get("/genre/:id/update", genre_controller.genre_update_get);
+router.get("/genre/:id/update", genreController.genreUpdateGet);
 
-router.post("/genre/:id/update", genre_controller.genre_update_post);
+router.post("/genre/:id/update", genreController.genreUpdatePost);
 
-router.get("/genre/:id", genre_controller.genre_detail);
+router.get("/genre/:id", genreController.genreDetail);
 
-router.get("/genres", genre_controller.genre_list);
+router.get("/genres", genreController.genreList);
  
 
     //BOOKINSTANCE ROUTES//
-router.get("/bookinstance/create", book_instance_controller.bookinstance_create_get);
+router.get("/bookinstance/create", bookInstanceController.bookInstanceCreateGet);
 
-router.post("/bookinstance/create", book_instance_controller.bookinstance_create_post);
+router.post("/bookinstance/create", bookInstanceController.bookInstanceCreatePost);
 
-router.get("/bookinstance/:id/delete", book_instance_controller.bookinstance_delete_get);
+router.get("/bookinstance/:id/delete", bookInstanceController.bookInstanceDeleteGet);
 
-router.post("/bookinstance/:id/delete", book_instance_controller.bookinstance_delete_post);
+router.post("/bookinstance/:id/delete", bookInstanceController.bookInstanceDeletePost);
 
-router.get("/bookinstance/:id/update", book_instance_controller.bookinstance_update_get);
+router.get("/bookinstance/:id/update", bookInstanceController.bookInstanceUpdateGet);
 
-router.post("/bookinstance/:id/update", book_instance_controller.bookinstance_update_post);
+router.post("/bookinstance/:id/update", bookInstanceController.bookInstanceUpdatePost);
 
-router.get("/bookinstance/:id", book_instance_controller.bookinstance_detail);
+router.get("/bookinstance/:id", bookInstanceController.bookInstanceDetail);
 
-router.get("/bookinstances", book_instance_controller.bookinstance_list);
+router.get("/bookinstances", bookInstanceController.bookInstanceList);
 
 module.exports = router;

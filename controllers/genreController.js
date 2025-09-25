@@ -1,17 +1,18 @@
 const Genre = require("../models/genre");
 const Book = require("../models/book");
 
-exports.genre_list = async (req, res, next) => {
-    const allGenres = await Genre.find().sort({ name: 1 }).exec();
-      res.render("genre_list", {
-        title: "Genre List",
-        genre_list: allGenres,
-      });
+exports.genreList = async (req, res, next) => {
+    const genres_list = await Genre.find().sort({ name: 1 }).exec();
+
+    res.render("genreList", {
+      title: "Genre List",
+      genres_list,
+    });
 };
 
-exports.genre_detail = async (req, res, next) => {
+exports.genreDetail = async (req, res, next) => {
 
-  const [genre, booksInGenre] = await Promise.all([
+  const [genre, books_in_genre] = await Promise.all([
     Genre.findById(req.params.id).exec(),
     Book.find({ genre: req.params.id }, "title summary").exec(),
   ]);
@@ -22,33 +23,33 @@ exports.genre_detail = async (req, res, next) => {
     return next(err);
   }
 
-  res.render("genre_detail", {
+  res.render("genreDetail", {
     title: "Genre Detail",
     genre,
-    genre_books: booksInGenre,
+    books_in_genre,
   });
 };
 
-exports.genre_create_get = async (req, res, next) => {
+exports.genreCreateGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Genre create get");
 };
 
-exports.genre_create_post = async (req, res, next) => {
+exports.genreCreatePost = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Genre create post");
 };
 
-exports.genre_delete_get = async (req, res, next) => {
+exports.genreDeleteGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Genre delete get");
 };
 
-exports.genre_delete_post = async (req, res, next) => {
+exports.genreDeletePost = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Genre delete post");
 };
 
-exports.genre_update_get = async (req, res, next) => {
+exports.genreUpdateGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Genre update get");
 };
 
-exports.genre_update_post = async (req, res, next) => {
+exports.genreUpdatePost = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Genre update post");
 };
