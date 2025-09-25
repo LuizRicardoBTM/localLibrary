@@ -7,11 +7,11 @@ exports.index = async (req, res, next) => {
   
   try{
   const [
-    numBooks,
-    numBookInstances,
-    numAvailableBookInstances,
-    numAuthors,
-    numGenres,
+    number_of_books,
+    number_of_book_instances,
+    number_of_available_book_instances,
+    number_of_authors,
+    number_of_genres,
   ] = await Promise.all([
     Book.countDocuments({}).exec(),
     BookInstance.countDocuments({}).exec(),
@@ -25,26 +25,29 @@ exports.index = async (req, res, next) => {
 
   res.render("index", {
     title: "Local Library Home",
-    book_count: numBooks,
-    book_instance_count: numBookInstances,
-    book_instance_available_count: numAvailableBookInstances,
-    author_count: numAuthors,
-    genre_count: numGenres,
+    number_of_books,
+    number_of_book_instances,
+    number_of_available_book_instances,
+    number_of_authors,
+    number_of_genres,
   });
 };
 
-exports.book_list = async (req, res, next) => {
-  const allBooks = await Book.find({}, "title author")
+exports.bookList = async (req, res, next) => {
+  const books_list = await Book.find({}, "title author")
     .sort({ title: 1 })
     .populate("author")
     .exec();
 
-  res.render("book_list", { title: "Book List", book_list: allBooks });
+  res.render("bookList", { 
+    title: "Book List", 
+    books_list,
+  });
 };
 
-exports.book_detail = async (req, res, next) => {
+exports.bookDetail = async (req, res, next) => {
 
-  const [book, bookInstance] = await Promise.all([
+  const [book, book_instances] = await Promise.all([
     Book.findById(req.params.id).populate("author").populate("genre").exec(),
     BookInstance.find({book: req.params.id}).exec(),
   ]);
@@ -55,33 +58,33 @@ exports.book_detail = async (req, res, next) => {
     return next(err);
   }
 
-  res.render("book_detail", {
+  res.render("bookDetail", {
     title: book.title,
     book,
-    book_instances: bookInstance,
+    book_instances,
   })
 };
 
-exports.book_create_get = async (req, res, next) => {
+exports.bookCreateGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Book create get");
 };
 
-exports.book_create_post = async (req, res, next) => {
+exports.bookCreatePost = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Book create post");
 };
 
-exports.book_delete_get = async (req, res, next) => {
+exports.bookDeleteGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Book delete get");
 };
 
-exports.book_delete_post = async (req, res, next) => {
+exports.bookDeletePost = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Book delete post");
 };
 
-exports.book_update_get = async (req, res, next) => {
+exports.bookUpdateGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Book update get");
 };
 
-exports.book_update_post = async (req, res, next) => {
+exports.bookUpdatePost = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Book update post");
 };

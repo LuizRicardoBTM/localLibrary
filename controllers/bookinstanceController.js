@@ -1,17 +1,17 @@
 const BookInstance = require("../models/bookinstance");
 
-exports.bookinstance_list = async (req, res, next) => {
-  const allBookInstances = await BookInstance.find().populate("book").exec();
+exports.bookInstanceList = async (req, res, next) => {
+  const bookinstance_list = await BookInstance.find().populate("book").exec();
 
-  res.render("bookinstance_list", {
+  res.render("bookinstanceList", {
     title: "Book Instance List",
-    bookinstance_list: allBookInstances,
+    bookinstance_list,
   });
 };
 
-exports.bookinstance_detail = async (req, res, next) =>{
+exports.bookInstanceDetail = async (req, res, next) =>{
     try{
-    const bookInstance = await BookInstance
+    const book_instance = await BookInstance
     .findById(req.params.id)
     .populate("book")
     .exec();
@@ -19,38 +19,38 @@ exports.bookinstance_detail = async (req, res, next) =>{
     return next(error); 
    }
 
-    if(bookInstance === null){
+    if(book_instance === null){
         const err = new Error("Book copy not found");
         err.status = 404;
         return next(err);
     }
 
-    res.render("bookinstance_detail", {
+    res.render("bookinstanceDetail", {
         title: "Book: ",
-        bookinstance: bookInstance,
+        book_instance,
     })
 };
 
-exports.bookinstance_create_get = async (req, res, next) => {
+exports.bookInstanceCreateGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: BookInstance create get");
 };
 
-exports.bookinstance_create_post = async (req, res, next) => {
+exports.bookInstanceCreatePost = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: BookInstance create post");
 };
 
-exports.bookinstance_delete_get = async (req, res, next) => {
+exports.bookInstanceDeleteGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: BookInstance delete get");
 };
 
-exports.bookinstance_delete_post = async (req, res, next) => {
+exports.bookInstanceDeletePost = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: BookInstance delete post");
 };
 
-exports.bookinstance_update_get = async (req, res, next) => {
+exports.bookInstanceUpdateGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: BookInstance update get");
 };
 
-exports.bookinstance_update_post = async (req, res, next) => {
+exports.bookInstanceUpdatePost = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: BookInstance update post");
 };
