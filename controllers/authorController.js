@@ -9,15 +9,6 @@ exports.author_list = async (req, res, next) => {
   });
 };
 
-async function findAuthorAndHisBooks(id) {
-  const [author, allBooksByAuthor] = await Promise.all([
-    Author.findById(id).exec(),
-    Book.find({ author: id }, "title summary").exec(),
-  ]);
-
-  return [author, allBooksByAuthor];
-}
-
 exports.author_detail = async (req, res, next) => {
 
    try {
