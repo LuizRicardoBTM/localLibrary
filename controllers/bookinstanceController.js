@@ -1,11 +1,11 @@
 const BookInstance = require("../models/bookinstance");
 
 exports.bookInstanceList = async (req, res, next) => {
-  const bookinstance_list = await BookInstance.find().populate("book").exec();
+  const book_instances_list = await BookInstance.find().populate("book").exec();
 
   res.render("bookinstanceList", {
     title: "Book Instance List",
-    bookinstance_list,
+    book_instances_list,
   });
 };
 

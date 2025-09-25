@@ -2,11 +2,11 @@ const Genre = require("../models/genre");
 const Book = require("../models/book");
 
 exports.genreList = async (req, res, next) => {
-    const all_genres = await Genre.find().sort({ name: 1 }).exec();
+    const genres_list = await Genre.find().sort({ name: 1 }).exec();
 
     res.render("genreList", {
       title: "Genre List",
-      all_genres,
+      genres_list,
     });
 };
 
