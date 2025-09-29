@@ -85,8 +85,8 @@ exports.authorCreatePost = [
             return;
         }
 
-        if(req.body.birthDate && req.body.deathDate && req.body.birthDate > req.body.deathDate){
-            const dateError = {msg:"The date of death cant be before date of birth"};
+        if(req.body.birthDate && req.body.deathDate && req.body.birthDate >= req.body.deathDate){
+            const dateError = {msg:"The date of death cant be before or equal to date of birth"};
            
             res.render("authorForm", {
                title: "Create Author",
