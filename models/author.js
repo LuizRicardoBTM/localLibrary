@@ -20,7 +20,7 @@ AuthorSchema.virtual("name").get(function(){
 });
 
 AuthorSchema.virtual("url").get(function(){
-    return `author/${this.id}`;
+    return `/catalog/author/${this.id}`;
 });
 
 AuthorSchema.virtual("lifespan").get(function(){

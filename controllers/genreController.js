@@ -66,7 +66,7 @@ exports.genreCreatePost = [
       }
 
       await genre.save();
-      res.redirect(genre.url)
+      res.redirect(genre.url);
     }
 ]
 
