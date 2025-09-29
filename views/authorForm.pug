@@ -7,12 +7,12 @@ block content
     div.form-group
       label(for='firstName') First Name:
       input#firstName.form-control(type='text', placeholder='First name (Christian)' name='firstName' required value=(undefined===author ? '' : author.firstName))
-      label(for='surname') Family Name:
+      label(for='surname') Surname:
       input#surname.form-control(type='text', placeholder='Surname (Family name)' name='surname' required value=(undefined===author ? '' : author.Surname))
     div.form-group
       label(for='birthDate') Date of birth:
       input#birthDate.form-control(type='date' name='birthDate' value=(undefined===author ? '' : author.birthDate))
-      label(for='deathDate') Date of birth:
+      label(for='deathDate') Date of death:
       input#deathDate.form-control(type='date' name='deathDate' value=(undefined===author ? '' : author.deathDate))
     button.btn.btn-primary(type='submit') Submit
 

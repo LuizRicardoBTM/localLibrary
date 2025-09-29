@@ -84,6 +84,14 @@ exports.authorCreatePost = [
             return;
         }
 
+        if(birthDate>deathDate){
+           res.render("authorForm", {
+                title: "Create Author",
+                author,
+                errors: "Date of death before birth",
+            });
+            return; 
+        }
         await author.save();
         res.redirect(author.url);
     }
