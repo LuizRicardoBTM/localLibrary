@@ -31,7 +31,7 @@ exports.genreDetail = async (req, res, next) => {
   });
 };
 
-exports.genreCreateGet = async (req, res, next) => {
+exports.genreCreateGet = (req, res, next) => {
     res.render("genreForm", {title: "Create Genre"});
 };
 

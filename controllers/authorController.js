@@ -1,5 +1,6 @@
 const Author = require("../models/author");
 const Book = require("../models/book");
+const {body, validationResult} = require("express-validator");
 
 exports.authorList = async (req, res, next) => {
   const authors_list = await Author.find().sort({ surname: 1 }).exec();
@@ -32,12 +33,12 @@ exports.authorDetail = async (req, res, next) => {
    }
 };
 
-exports.authorCreateGet = async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Author create get");
+exports.authorCreateGet = (req, res, next) => {
+    res.render("authorForm", {title: "Create Author"})
 };
 
 exports.authorCreatePost = async (req, res, next) =>{
-    res.send("NOT IMPLEMENTED: Author create post");
+    
 };
 
 exports.authorDeleteGet = async (req, res, next) => {
