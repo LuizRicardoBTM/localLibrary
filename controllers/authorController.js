@@ -37,9 +37,57 @@ exports.authorCreateGet = (req, res, next) => {
     res.render("authorForm", {title: "Create Author"})
 };
 
-exports.authorCreatePost = async (req, res, next) =>{
-    
-};
+exports.authorCreatePost = [
+    body("firstName")
+        .trim()
+        .isLength({min: 1})
+        .escape()
+        .withMessage("Name must be specified.")
+        .isAlphanumeric()
+        .withMessage("Name has non-alphanumeric characters."),
+
+    body("surname")
+        .trim()
+        .isLength({min: 1})
+        .escape()
+        .withMessage("Surname must be specified.")
+        .isAlphanumeric()
+        .withMessage("Surname has non-alphanumeric characters."),
+
+    body("birthDate", "Invalid date of birth")
+        .optional({values: "falsy"})
+        .isISO8601()
+        .toDate(),
+
+    body("deathDate", "Invalid date of death")
+        .optional({values: "falsy"})
+        .isISO8601()
+        .toDate(),
+
+
+    async (req, res, next) =>{
+        const errors = validationResult(req);
+
+        const author = new Author({
+            firstName: req.body.firstName,
+            surname: req.body.surname,
+            birthDate: req.body.birthDate,
+            deathDate: req.body.deathDate,
+        })
+
+        if(!errors.isEmpty()){
+            res.render("authorForm", {
+                title: "Create Author",
+                author,
+                errors: errors.array(),
+            });
+            return;
+        }
+
+        await author.save();
+        res.redirect(author.url);
+    }
+];
 
 exports.authorDeleteGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Author delete get");
