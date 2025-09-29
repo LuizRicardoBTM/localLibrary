@@ -1,3 +1,4 @@
+const { error } = require("node:console");
 const Author = require("../models/author");
 const Book = require("../models/book");
 const {body, validationResult} = require("express-validator");
@@ -84,11 +85,13 @@ exports.authorCreatePost = [
             return;
         }
 
-        if(birthDate>deathDate){
-           res.render("authorForm", {
-                title: "Create Author",
+        if(req.body.birthDate && req.body.deathDate && req.body.birthDate > req.body.deathDate){
+            const dateError = {msg:"The date of death cant be before date of birth"};
+           
+            res.render("authorForm", {
+               title: "Create Author",
                 author,
-                errors: "Date of death before birth",
+                dateError,
             });
             return; 
         }
