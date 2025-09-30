@@ -1,6 +1,7 @@
+const utils = require("../utils");
 const Genre = require("../models/genre");
 const Book = require("../models/book");
-const {body, validationResult} = require("express-validator")
+const {body, validationResult} = require("express-validator");
 
 exports.genreList = async (req, res, next) => {
     const genres_list = await Genre.find().sort({ name: 1 }).exec();
@@ -36,15 +37,12 @@ exports.genreCreateGet = (req, res, next) => {
 };
 
 exports.genreCreatePost = [
-  body("name", "Genre name must contain at least 3 letters")
-    .trim()
-    .isLength({min: 3})
-    .escape(),
+  body("name"),
 
     async (req, res, next) => {
-      const errors = validationResult(req);
+      const payload = req.body;
 
-      const genre = new Genre({name: req.body.name});
+      const errors = validationResult(req);
 
       if(!errors.isEmpty()){
         res.render("genreForm", {
@@ -55,8 +53,9 @@ exports.genreCreatePost = [
 
         return;
       }
+      const cleanGenre = utils.genreValidation(payload.name, 3);
 
-      const genreExists = await Genre.findOne({name: req.body.name})
+      const genreExists = await Genre.findOne({name: cleanGenre})
         .collation({locale: "en", strength: 2})
         .exec();
 
@@ -65,7 +64,9 @@ exports.genreCreatePost = [
         return;
       }
 
+      const genre = new Genre({name: cleanGenre});
       await genre.save();
+      
       res.redirect(genre.url);
     }
 ]
