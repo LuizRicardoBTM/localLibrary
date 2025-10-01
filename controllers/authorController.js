@@ -39,6 +39,7 @@ exports.authorCreateGet = (req, res, next) => {
 };
 
 exports.authorCreatePost = [
+
     body("firstName")
         .trim()
         .isLength({min: 1})
@@ -67,13 +68,15 @@ exports.authorCreatePost = [
 
 
     async (req, res, next) =>{
+       
+        const payload = req.body;
         const errors = validationResult(req);
 
         const author = new Author({
-            firstName: req.body.firstName,
-            surname: req.body.surname,
-            birthDate: req.body.birthDate,
-            deathDate: req.body.deathDate,
+            firstName: payload.firstName,
+            surname: payload.surname,
+            birthDate: payload.birthDate,
+            deathDate: payload.deathDate,
         })
 
         if(!errors.isEmpty()){
@@ -85,7 +88,16 @@ exports.authorCreatePost = [
             return;
         }
 
-        if(req.body.birthDate && req.body.deathDate && req.body.birthDate >= req.body.deathDate){
+        function deathAfterBirth (birth, death){
+            if(payload.birthDate && payload.deathDate && payload.birthDate >= payload.deathDate){
+                return true;
+            }
+
+            return false;
+
+        }
+
+        if(deathAfterBirth){
             const dateError = {msg:"The date of death cant be before or equal to date of birth"};
            
             res.render("authorForm", {
