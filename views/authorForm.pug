@@ -6,9 +6,9 @@ block content
   form(method='POST')
     div.form-group
       label(for='firstName') First Name:
-      input#firstName.form-control(type='text', placeholder='First name (Christian)' name='firstName' required value=(undefined===author ? '' : author.firstName))
+      input#firstName.form-control(type='text', placeholder='First name (Christian)' name='firstName' required)
       label(for='surname') Surname:
-      input#surname.form-control(type='text', placeholder='Surname (Family name)' name='surname' required value=(undefined===author ? '' : author.Surname))
+      input#surname.form-control(type='text', placeholder='Surname (Family name)' name='surname' required)
     div.form-group
       label(for='birthDate') Date of birth:
       input#birthDate.form-control(type='date' name='birthDate' value=(undefined===author ? '' : author.birthDate))
@@ -20,3 +20,8 @@ block content
     ul
       for error in errors
         li!= error.msg
+
+
+  if errorMensage
+    ul
+      li!= errorMensage
