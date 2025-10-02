@@ -12,16 +12,17 @@ exports.authorList = async (req, res, next) => {
 };
 
 exports.authorDetail = async (req, res, next) => {
+    const payload = req.body;
 
-   try {
-    const author = await Author.findById(req.params.id).exec();
+    try {
+        const author = await Author.findById(payload.id).exec();
 
     if(author === null){
         const err = new Error("Author not found");
         err.status = 404;
         return next(err);
     }
-    const  author_books  = await Book.find({ author: req.params.id }, "title summary").exec();
+    const  author_books  = await Book.find({ author: payload.id }, "title summary").exec();
 
     res.render("authorDetail", {
         title: "Author Details",
@@ -68,8 +69,8 @@ exports.authorCreatePost = [
 
 
     async (req, res, next) =>{
-        const payload = req.body;
         const errors = validationResult(req);
+        const payload = req.body;
 
         const author = new Author({
             firstName: payload.firstName,
@@ -112,11 +113,42 @@ exports.authorCreatePost = [
 ];
 
 exports.authorDeleteGet = async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Author delete get");
+    const payload = req.body;
+    const [author, all_author_books] = await Promise.all([
+        Author.findById(payload.id).exec(),
+        Book.find({ author: payload.id }, "title summary").exec(),
+    ]);
+
+  if (author === null) {
+    res.redirect("/catalog/authors");
+    return;
+  }
+
+  res.render("authorDelete", {
+    title: "Delete Author",
+    author,
+    authorBooks: all_author_books,
+  });
 };
 
 exports.authorDeletePost = async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Author delete post");
+    const payload = req.body;
+    const [author, all_author_books] = await Promise.all([
+        Author.findById(payload.id).exec(),
+        Book.find({ author: payload.id }, "title summary").exec(),
+    ]);
+
+    if (all_author_books.length > 0) {
+        res.render("authorDelete", {
+            title: "Delete Author",
+            author,
+            authorBooks: all_author_books,
+        });
+        return;
+    }
+    
+    await Author.findByIdAndDelete(req.body.authorid);
+    res.redirect("/catalog/authors");
 };
 
 exports.authorUpdateGet = async (req, res, next) => {
