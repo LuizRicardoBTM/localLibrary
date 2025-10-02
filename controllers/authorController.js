@@ -67,13 +67,14 @@ exports.authorCreatePost = [
 
 
     async (req, res, next) =>{
+        const payload = req.body;
         const errors = validationResult(req);
 
         const author = new Author({
-            firstName: req.body.firstName,
-            surname: req.body.surname,
-            birthDate: req.body.birthDate,
-            deathDate: req.body.deathDate,
+            firstName: payload.firstName,
+            surname: payload.surname,
+            birthDate: payload.birthDate,
+            deathDate: payload.deathDate,
         })
 
         if(!errors.isEmpty()){
@@ -84,17 +85,37 @@ exports.authorCreatePost = [
             });
             return;
         }
+        
+        console.log(typeof payload.birthDate);
+        console.log(typeof payload.deathDate);
 
-        if(req.body.birthDate && req.body.deathDate && req.body.birthDate >= req.body.deathDate){
-            const dateError = {msg:"The date of death cant be before or equal to date of birth"};
-           
-            res.render("authorForm", {
-               title: "Create Author",
-                author,
-                dateError,
-            });
-            return; 
+        async function birthAndDeathDateExists(birth, death){
+            if(birth !== "" && death !== ""){
+                return true;
+            }
+            return false;
         }
+
+        async function deathBeforeBirth (birth, death){
+            //transformar data em timestamp
+            if(birth >= death){
+                return true;
+            }
+            return false;
+        }
+
+        if(birthAndDeathDateExists(payload.birthDate, payload.deathDate)){
+            
+            if(deathBeforeBirth(payload.birthDate, payload.deathDate)){
+                return res.render("authorForm", {
+                        title: "Create Author",
+                        author,
+                        errorMensage: "The date of death cant be before or equal to date of birth",
+                    });
+                
+            }
+        }   
+        
         await author.save();
         res.redirect(author.url);
     }
