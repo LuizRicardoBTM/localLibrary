@@ -39,6 +39,7 @@ exports.authorCreateGet = (req, res, next) => {
 };
 
 exports.authorCreatePost = [
+
     body("firstName")
         .trim()
         .isLength({min: 1})
@@ -85,12 +86,6 @@ exports.authorCreatePost = [
             });
             return;
         }
-
-        function birthAndDeathDateExists(birth, death){
-            if(birth !== "" && death !== ""){
-                return true;
-            }
-            return false;
         }
 
         function deathBeforeBirth (birth, death){
