@@ -31,16 +31,20 @@ exports.bookInstanceDetail = async (req, res, next) =>{
 };
 
 exports.bookInstanceCreateGet = async (req, res, next) => {
-    const allBooks = await Book.find({}, "title").sort({ title: 1 }).exec();
+    const allBooks = await book.find({}, "title").sort({title: 1}).exec();
 
     res.render("bookInstanceForm", {
-        title: "Create BookInstance",
-        book_list: allBooks,
+        title: "Create Book Instance",
+        allBooks,
     });
 };
 
 exports.bookInstanceCreatePost = [
-
+    body("book", "Book must be specified")
+        .trim()
+        .isLength({min: 1})
+        .escape(),
+]
   body("book", "Book must be specified")
     .trim()
     .isLength({ min: 1 })
