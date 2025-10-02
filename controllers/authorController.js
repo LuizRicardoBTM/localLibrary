@@ -85,19 +85,15 @@ exports.authorCreatePost = [
             });
             return;
         }
-        
-        console.log(typeof payload.birthDate);
-        console.log(typeof payload.deathDate);
 
-        async function birthAndDeathDateExists(birth, death){
+        function birthAndDeathDateExists(birth, death){
             if(birth !== "" && death !== ""){
                 return true;
             }
             return false;
         }
 
-        async function deathBeforeBirth (birth, death){
-            //transformar data em timestamp
+        function deathBeforeBirth (birth, death){
             if(birth >= death){
                 return true;
             }
@@ -106,7 +102,7 @@ exports.authorCreatePost = [
 
         if(birthAndDeathDateExists(payload.birthDate, payload.deathDate)){
             
-            if(deathBeforeBirth(payload.birthDate, payload.deathDate)){
+            if(deathBeforeBirth(payload.birthDate.getTime(), payload.deathDate.getTime())){
                 return res.render("authorForm", {
                         title: "Create Author",
                         author,
