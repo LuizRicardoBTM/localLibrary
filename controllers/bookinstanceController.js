@@ -40,14 +40,57 @@ exports.bookInstanceCreateGet = async (req, res, next) => {
 };
 
 exports.bookInstanceCreatePost = [
-    
     body("book", "Book must be specified")
         .trim()
         .isLength({min: 1})
         .escape(),
-
-    
 ]
+  body("book", "Book must be specified")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+
+  body("imprint", "Imprint must be specified")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+
+  body("status")
+    .escape(),
+
+  body("dueBack", "Invalid date")
+    .optional({ values: "falsy" })
+    .isISO8601()
+    .toDate(),
+
+
+  async (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const allBooks = await Book.find({}, "title").sort({ title: 1 }).exec();
+
+      res.render("bookInstanceForm", {
+        title: "Create Book Instance",
+        book_list: allBooks,
+        selected_book: bookInstance.book._id,
+        errors: errors.array(),
+        bookinstance: bookInstance,
+      });
+      return;
+    }
+
+    const bookInstance = new BookInstance({
+      book: req.body.book,
+      imprint: req.body.imprint,
+      status: req.body.status,
+      dueBack: req.body.due_back,
+    });
+    await bookInstance.save();
+
+    res.redirect(bookInstance.url);
+  },
+];
 
 exports.bookInstanceDeleteGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: BookInstance delete get");

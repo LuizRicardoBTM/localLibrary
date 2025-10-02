@@ -3,12 +3,21 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require("cors");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var catalogRouter = require('./routes/catalog');
 
 var app = express();
+
+const corsOptions = {
+  origin: 'https://localhost:3000/',
+  methods: 'GET,POST,DELETE,UPDATE',
+  credentials: true,
+  optionsSuccessStatus: 204
+};
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -19,6 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(cors(corsOptions));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/catalog', catalogRouter);
