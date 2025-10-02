@@ -40,11 +40,6 @@ exports.bookInstanceCreateGet = async (req, res, next) => {
 };
 
 exports.bookInstanceCreatePost = [
-    body("book", "Book must be specified")
-        .trim()
-        .isLength({min: 1})
-        .escape(),
-]
   body("book", "Book must be specified")
     .trim()
     .isLength({ min: 1 })
