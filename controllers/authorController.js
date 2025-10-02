@@ -2,7 +2,6 @@ const { error } = require("node:console");
 const Author = require("../models/author");
 const Book = require("../models/book");
 const {body, validationResult} = require("express-validator");
-const payload = req.body;
 
 exports.authorList = async (req, res, next) => {
   const authors_list = await Author.find().sort({ surname: 1 }).exec();
@@ -13,9 +12,10 @@ exports.authorList = async (req, res, next) => {
 };
 
 exports.authorDetail = async (req, res, next) => {
+    const payload = req.body;
 
-   try {
-    const author = await Author.findById(payload.id).exec();
+    try {
+        const author = await Author.findById(payload.id).exec();
 
     if(author === null){
         const err = new Error("Author not found");
@@ -70,6 +70,7 @@ exports.authorCreatePost = [
 
     async (req, res, next) =>{
         const errors = validationResult(req);
+        const payload = req.body;
 
         const author = new Author({
             firstName: payload.firstName,
@@ -112,6 +113,7 @@ exports.authorCreatePost = [
 ];
 
 exports.authorDeleteGet = async (req, res, next) => {
+    const payload = req.body;
     const [author, all_author_books] = await Promise.all([
         Author.findById(payload.id).exec(),
         Book.find({ author: payload.id }, "title summary").exec(),
@@ -130,6 +132,7 @@ exports.authorDeleteGet = async (req, res, next) => {
 };
 
 exports.authorDeletePost = async (req, res, next) => {
+    const payload = req.body;
     const [author, all_author_books] = await Promise.all([
         Author.findById(payload.id).exec(),
         Book.find({ author: payload.id }, "title summary").exec(),
