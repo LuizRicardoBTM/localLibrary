@@ -2,6 +2,7 @@ const { error } = require("node:console");
 const Author = require("../models/author");
 const Book = require("../models/book");
 const {body, validationResult} = require("express-validator");
+const payload = req.body;
 
 exports.authorList = async (req, res, next) => {
   const authors_list = await Author.find().sort({ surname: 1 }).exec();
@@ -14,14 +15,14 @@ exports.authorList = async (req, res, next) => {
 exports.authorDetail = async (req, res, next) => {
 
    try {
-    const author = await Author.findById(req.params.id).exec();
+    const author = await Author.findById(payload.id).exec();
 
     if(author === null){
         const err = new Error("Author not found");
         err.status = 404;
         return next(err);
     }
-    const  author_books  = await Book.find({ author: req.params.id }, "title summary").exec();
+    const  author_books  = await Book.find({ author: payload.id }, "title summary").exec();
 
     res.render("authorDetail", {
         title: "Author Details",
@@ -68,7 +69,6 @@ exports.authorCreatePost = [
 
 
     async (req, res, next) =>{
-        const payload = req.body;
         const errors = validationResult(req);
 
         const author = new Author({
@@ -112,11 +112,40 @@ exports.authorCreatePost = [
 ];
 
 exports.authorDeleteGet = async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Author delete get");
+    const [author, all_author_books] = await Promise.all([
+        Author.findById(payload.id).exec(),
+        Book.find({ author: payload.id }, "title summary").exec(),
+    ]);
+
+  if (author === null) {
+    res.redirect("/catalog/authors");
+    return;
+  }
+
+  res.render("authorDelete", {
+    title: "Delete Author",
+    author,
+    authorBooks: all_author_books,
+  });
 };
 
 exports.authorDeletePost = async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Author delete post");
+    const [author, all_author_books] = await Promise.all([
+        Author.findById(payload.id).exec(),
+        Book.find({ author: payload.id }, "title summary").exec(),
+    ]);
+
+    if (all_author_books.length > 0) {
+        res.render("authorDelete", {
+            title: "Delete Author",
+            author,
+            authorBooks: all_author_books,
+        });
+        return;
+    }
+    
+    await Author.findByIdAndDelete(req.body.authorid);
+    res.redirect("/catalog/authors");
 };
 
 exports.authorUpdateGet = async (req, res, next) => {
