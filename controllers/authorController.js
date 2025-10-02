@@ -86,7 +86,6 @@ exports.authorCreatePost = [
             });
             return;
         }
-        }
 
         function deathBeforeBirth (birth, death){
             if(birth >= death){
