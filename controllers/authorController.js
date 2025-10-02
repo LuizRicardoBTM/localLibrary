@@ -1,5 +1,7 @@
+const { error } = require("node:console");
 const Author = require("../models/author");
 const Book = require("../models/book");
+const {body, validationResult} = require("express-validator");
 
 exports.authorList = async (req, res, next) => {
   const authors_list = await Author.find().sort({ surname: 1 }).exec();
@@ -32,13 +34,88 @@ exports.authorDetail = async (req, res, next) => {
    }
 };
 
-exports.authorCreateGet = async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Author create get");
+exports.authorCreateGet = (req, res, next) => {
+    res.render("authorForm", {title: "Create Author"})
 };
 
-exports.authorCreatePost = async (req, res, next) =>{
-    res.send("NOT IMPLEMENTED: Author create post");
-};
+exports.authorCreatePost = [
+    body("firstName")
+        .trim()
+        .isLength({min: 1})
+        .escape()
+        .withMessage("Name must be specified.")
+        .isAlphanumeric()
+        .withMessage("Name has non-alphanumeric characters."),
+
+    body("surname")
+        .trim()
+        .isLength({min: 1})
+        .escape()
+        .withMessage("Surname must be specified.")
+        .isAlphanumeric()
+        .withMessage("Surname has non-alphanumeric characters."),
+
+    body("birthDate", "Invalid date of birth")
+        .optional({values: "falsy"})
+        .isISO8601()
+        .toDate(),
+
+    body("deathDate", "Invalid date of death")
+        .optional({values: "falsy"})
+        .isISO8601()
+        .toDate(),
+
+
+    async (req, res, next) =>{
+        const payload = req.body;
+        const errors = validationResult(req);
+
+        const author = new Author({
+            firstName: payload.firstName,
+            surname: payload.surname,
+            birthDate: payload.birthDate,
+            deathDate: payload.deathDate,
+        })
+
+        if(!errors.isEmpty()){
+            res.render("authorForm", {
+                title: "Create Author",
+                author,
+                errors: errors.array(),
+            });
+            return;
+        }
+
+        function birthAndDeathDateExists(birth, death){
+            if(birth !== "" && death !== ""){
+                return true;
+            }
+            return false;
+        }
+
+        function deathBeforeBirth (birth, death){
+            if(birth >= death){
+                return true;
+            }
+            return false;
+        }
+
+        if(birthAndDeathDateExists(payload.birthDate, payload.deathDate)){
+            
+            if(deathBeforeBirth(payload.birthDate.getTime(), payload.deathDate.getTime())){
+                return res.render("authorForm", {
+                        title: "Create Author",
+                        author,
+                        errorMensage: "The date of death cant be before or equal to date of birth",
+                    });
+                
+            }
+        }   
+        
+        await author.save();
+        res.redirect(author.url);
+    }
+];
 
 exports.authorDeleteGet = async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Author delete get");
